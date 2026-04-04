@@ -25,16 +25,10 @@
   --nav-bg:rgba(245,242,236,0.85);--loader-bg:#f5f2ec;--cursor-blend:exclusion;
 }
 :root{--serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
-html{scroll-behavior:smooth;overflow-x:hidden;cursor:none}
-body{background:var(--bg);color:var(--text-primary);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .5s,color .5s;cursor:none}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--text-primary);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .5s,color .5s}
 ::selection{background:var(--accent);color:var(--bg)}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:3px}
-a,button,.tool-tag,.project-card,.contact-btn,.theme-toggle,.menu-toggle{cursor:none}
-
-.cursor-dot{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s;mix-blend-mode:var(--cursor-blend)}
-.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width .35s cubic-bezier(.23,1,.32,1),height .35s cubic-bezier(.23,1,.32,1),border-color .3s;opacity:.5}
-.cursor-dot.hover{width:14px;height:14px;background:var(--accent-glow)}
-.cursor-ring.hover{width:56px;height:56px;border-color:var(--accent);opacity:.8}
 
 #loader{position:fixed;inset:0;z-index:9999;background:var(--loader-bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;transition:opacity .8s,visibility .8s}
 #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
@@ -51,12 +45,12 @@ nav .nav-links{display:flex;gap:6px;align-items:center}
 nav .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;transition:all .3s;padding:8px 18px;border-radius:8px;border:1px solid transparent;background:transparent}
 nav .nav-links a:hover{color:var(--accent);background:var(--glass);border-color:var(--glass-border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 12px rgba(0,0,0,0.1)}
 
-.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:7px 14px;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);transition:all .3s;cursor:none}
+.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:7px 14px;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);transition:all .3s;cursor:pointer}
 .theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
 .theme-toggle svg{width:14px;height:14px;transition:transform .5s}
 .theme-toggle:hover svg{transform:rotate(180deg)}
 
-.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:none;z-index:101;background:none;border:none;padding:4px}
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101;background:none;border:none;padding:4px}
 .menu-toggle span{display:block;width:24px;height:1.5px;background:var(--text-primary);transition:all .3s}
 
 section{position:relative;z-index:1}
@@ -121,7 +115,7 @@ section{position:relative;z-index:1}
 
 #projects{padding:120px 40px;max-width:1100px;margin:0 auto}
 .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:0}
-.project-card{position:relative;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-card);transition:all .5s cubic-bezier(.23,1,.32,1);cursor:none;opacity:0;transform:translateY(30px)}
+.project-card{position:relative;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-card);transition:all .5s cubic-bezier(.23,1,.32,1);opacity:0;transform:translateY(30px)}
 .project-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 30px var(--accent-dim)}
 .project-thumb{width:100%;aspect-ratio:16/9;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .project-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--bg-card),transparent 50%)}
@@ -164,7 +158,7 @@ section{position:relative;z-index:1}
 .contact-heading em{font-style:italic;color:var(--accent)}
 .contact-sub{font-size:15px;color:var(--text-secondary);margin-bottom:48px;line-height:1.6;font-weight:300}
 .contact-links{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
-.contact-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border:1px solid var(--border);border-radius:40px;color:var(--text-primary);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:.03em;transition:all .4s;background:transparent;cursor:none}
+.contact-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border:1px solid var(--border);border-radius:40px;color:var(--text-primary);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:.03em;transition:all .4s;background:transparent}
 .contact-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);transform:translateY(-2px)}
 .contact-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500}
 .contact-btn.primary:hover{background:transparent;color:var(--accent)}
@@ -174,16 +168,13 @@ section{position:relative;z-index:1}
 
 footer{padding:40px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;max-width:1400px;margin:0 auto}
 footer p{font-size:11px;color:var(--text-muted);font-family:var(--mono);letter-spacing:.05em}
-footer a{color:var(--text-secondary);text-decoration:none;transition:color .3s;cursor:none}
+footer a{color:var(--text-secondary);text-decoration:none;transition:color .3s}
 footer a:hover{color:var(--accent)}
 
 .fade-in{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}
 .fade-in.visible{opacity:1;transform:translateY(0)}
 
 @media(max-width:900px){
-  html,body,.cursor-dot,.cursor-ring{cursor:auto!important}
-  .cursor-dot,.cursor-ring{display:none!important}
-  a,button,.tool-tag,.project-card,.contact-btn,.theme-toggle,.menu-toggle{cursor:auto!important}
   nav{padding:16px 20px;position:fixed;flex-wrap:wrap}
   nav .nav-links{display:none;width:100%;order:3;flex-direction:column;align-items:stretch;gap:0;margin-top:16px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:14px;padding:8px;box-shadow:0 12px 48px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.04);animation:menuSlideIn .3s cubic-bezier(.23,1,.32,1)}
   nav .nav-links.open{display:flex}
@@ -209,8 +200,6 @@ footer a:hover{color:var(--accent)}
 </style>
 </head>
 <body>
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <div id="loader">
   <div class="loader-text">Crafting Experience</div>
@@ -394,16 +383,6 @@ footer a:hover{color:var(--accent)}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
-let cx=0,cy=0,dx=0,dy=0;
-document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY});
-function animateCursor(){dx+=(cx-dx)*.15;dy+=(cy-dy)*.15;dot.style.left=cx+'px';dot.style.top=cy+'px';ring.style.left=dx+'px';ring.style.top=dy+'px';requestAnimationFrame(animateCursor)}
-animateCursor();
-document.querySelectorAll('a,button,.tool-tag,.project-card,.marquee-item').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{dot.classList.add('hover');ring.classList.add('hover')});
-  el.addEventListener('mouseleave',()=>{dot.classList.remove('hover');ring.classList.remove('hover')});
-});
-
 const loaderFill=document.getElementById('loader-fill'),loader=document.getElementById('loader');
 let progress=0;
 const li=setInterval(()=>{progress+=Math.random()*25+10;if(progress>=100){progress=100;clearInterval(li);setTimeout(()=>{loader.classList.add('hidden');animateHero()},400)}loaderFill.style.width=progress+'%'},200);
