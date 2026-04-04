@@ -1,0 +1,9 @@
+{
+  "name": "rouf-portfolio",
+  "version": "1.0.0",
+  "description": "Abdur Rouf Ahmed — Portfolio",
+  "scripts": {
+    "start": "npx serve public",
+    "build": "echo 'Static site — no build needed'"
+  }
+}
