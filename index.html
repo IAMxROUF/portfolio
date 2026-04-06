@@ -36,32 +36,19 @@ body{background:var(--bg);color:var(--text-primary);font-family:var(--sans);over
 #loader .loader-bar{width:200px;height:2px;background:var(--border);border-radius:2px;overflow:hidden}
 #loader .loader-fill{height:100%;width:0;background:var(--accent);border-radius:2px;transition:width .3s}
 
-#scene-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+/* ── VIDEO BACKGROUND ── */
+.hero-video-wrap{position:absolute;top:200px;left:0;right:0;bottom:0;z-index:0;overflow:hidden}
+.hero-video-wrap video{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s ease}
+.hero-video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 30%,transparent 60%,var(--bg) 100%);z-index:1;pointer-events:none}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:var(--nav-bg);border-bottom:1px solid var(--border);transition:background .5s}
-nav .logo{font-family:var(--serif);font-size:20px;color:var(--text-primary);letter-spacing:.02em;text-decoration:none}
-nav .logo span{color:var(--accent)}
-nav .nav-links{display:flex;gap:6px;align-items:center}
-nav .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;transition:all .3s;padding:8px 18px;border-radius:8px;border:1px solid transparent;background:transparent}
-nav .nav-links a:hover{color:var(--accent);background:var(--glass);border-color:var(--glass-border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 12px rgba(0,0,0,0.1)}
-
-.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:7px 14px;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);transition:all .3s;cursor:pointer}
-.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
-.theme-toggle svg{width:14px;height:14px;transition:transform .5s}
-.theme-toggle:hover svg{transform:rotate(180deg)}
-
-.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101;background:none;border:none;padding:4px}
-.menu-toggle span{display:block;width:24px;height:1.5px;background:var(--text-primary);transition:all .3s}
-
-section{position:relative;z-index:1}
-
-#hero{height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
-.hero-content{text-align:center;max-width:900px;padding:0 40px}
+/* ── CINEMATIC HERO ── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding-top:calc(8rem - 75px);padding-bottom:160px}
+.hero-content{text-align:center;max-width:900px;padding:0 24px;position:relative;z-index:10}
 .hero-eyebrow{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;opacity:0;transform:translateY(20px)}
-.hero-name{font-family:var(--serif);font-size:clamp(48px,9vw,120px);line-height:.9;color:var(--text-primary);margin-bottom:24px;opacity:0;transform:translateY(40px)}
-.hero-name em{font-style:italic;color:var(--accent)}
-.hero-subtitle{font-size:clamp(14px,2vw,18px);color:var(--text-secondary);font-weight:300;line-height:1.6;max-width:580px;margin:0 auto 40px;opacity:0;transform:translateY(20px)}
-.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;transform:translateY(20px)}
+.hero-name{font-family:var(--serif);font-size:clamp(48px,9vw,120px);line-height:.95;letter-spacing:-2.46px;color:var(--text-primary);margin-bottom:0;opacity:0;transform:translateY(20px)}
+.hero-name em{font-style:italic;color:var(--text-secondary)}
+.hero-subtitle{font-size:clamp(15px,2vw,18px);color:var(--text-secondary);font-weight:300;line-height:1.7;max-width:560px;margin:32px auto 0;opacity:0;transform:translateY(20px)}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:48px;opacity:0;transform:translateY(20px)}
 .hero-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:40px;font-size:14px;font-weight:400;letter-spacing:.03em;text-decoration:none;transition:all .4s cubic-bezier(.23,1,.32,1);font-family:var(--sans)}
 .hero-btn.primary{background:var(--accent);color:#fff;border:1px solid var(--accent)}
 .hero-btn.primary:hover{background:transparent;color:var(--accent);transform:translateY(-2px)}
@@ -72,7 +59,29 @@ section{position:relative;z-index:1}
 .hero-scroll span{font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase}
 .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scrollPulse 2s ease infinite}
 @keyframes scrollPulse{0%,100%{opacity:.3;height:40px}50%{opacity:1;height:60px}}
-.hero-noise{position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+
+/* ── FADE RISE ANIMATIONS ── */
+@keyframes fadeRise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-rise{animation:fadeRise .8s ease-out forwards}
+.animate-fade-rise-delay{animation:fadeRise .8s ease-out .2s forwards;opacity:0}
+.animate-fade-rise-delay-2{animation:fadeRise .8s ease-out .4s forwards;opacity:0}
+.animate-fade-rise-delay-3{animation:fadeRise .8s ease-out .6s forwards;opacity:0}
+
+/* ── NAVIGATION ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:var(--nav-bg);border-bottom:1px solid var(--border);transition:background .5s}
+nav .logo{font-family:var(--serif);font-size:20px;color:var(--text-primary);letter-spacing:.02em;text-decoration:none}
+nav .logo span{color:var(--accent)}
+nav .nav-links{display:flex;gap:6px;align-items:center}
+nav .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;transition:all .3s;padding:8px 18px;border-radius:8px;border:1px solid transparent;background:transparent}
+nav .nav-links a:hover{color:var(--accent);background:var(--glass);border-color:var(--glass-border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:7px 14px;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);transition:all .3s;cursor:pointer}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.theme-toggle svg{width:14px;height:14px;transition:transform .5s}
+.theme-toggle:hover svg{transform:rotate(180deg)}
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101;background:none;border:none;padding:4px}
+.menu-toggle span{display:block;width:24px;height:1.5px;background:var(--text-primary);transition:all .3s}
+
+section{position:relative;z-index:1}
 
 #whatido{padding:96px 0 88px;overflow:hidden;position:relative}
 #whatido .section-label{padding-left:40px;margin-bottom:32px}
@@ -212,8 +221,6 @@ footer a:hover{color:var(--accent)}
   <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
 </div>
 
-<canvas id="scene-canvas"></canvas>
-
 <nav>
   <a href="#hero" class="logo">rouf<span>.</span></a>
   <div class="nav-links" id="navLinks">
@@ -235,19 +242,27 @@ footer a:hover{color:var(--accent)}
 </nav>
 
 <section id="hero">
-  <div class="hero-noise"></div>
+  <!-- Video Background -->
+  <div class="hero-video-wrap">
+    <video id="heroVideo" muted playsinline preload="auto">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-overlay"></div>
+  </div>
+
+  <!-- Hero Content -->
   <div class="hero-content">
-    <p class="hero-eyebrow">Experience Designer · UX Researcher · XR Designer</p>
-    <h1 class="hero-name">Abdur Rouf<br><em>Ahmed</em></h1>
-    <p class="hero-subtitle">Bridging tradition and technology — designing human-centered immersive experiences that uplift society and drive business value.</p>
-    <div class="hero-cta">
+    <p class="hero-eyebrow animate-fade-rise">Experience Designer · UX Researcher · XR Designer</p>
+    <h1 class="hero-name animate-fade-rise-delay">Beyond <em>screens,</em> I craft<br><em>the experience.</em></h1>
+    <p class="hero-subtitle animate-fade-rise-delay-2">Bridging tradition and technology — designing human-centered immersive experiences for brilliant minds, fearless makers, and thoughtful communities.</p>
+    <div class="hero-cta animate-fade-rise-delay-3">
       <a href="https://drive.google.com/file/d/10NcHXahTdT7nCxXtR2XYqMIdRGHWYZ4a/view?usp=sharing" target="_blank" class="hero-btn primary">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download Resume
+        My Resume
       </a>
-      <a href="#projects" class="hero-btn secondary">View My Work</a>
+      <a href="#projects" class="hero-btn secondary">View My Works</a>
     </div>
-    <div class="hero-scroll">
+    <div class="hero-scroll animate-fade-rise-delay-3">
       <span>Scroll to explore</span>
       <div class="scroll-line"></div>
     </div>
@@ -321,7 +336,7 @@ footer a:hover{color:var(--accent)}
   <div class="timeline">
     <div class="timeline-item"><div class="timeline-role">Design Research Intern</div><div class="timeline-company">Rural Handmade, Mumbai</div><div class="timeline-date">Dec 2025 — Feb 2026</div><div class="timeline-desc">Explored immersive technology interventions (AR/VR) to promote and preserve handmade products and their cultural narratives. Conducted field research, stakeholder interviews, and ethnographic studies with rural artisan communities.</div></div>
     <div class="timeline-item"><div class="timeline-role">Freelance Product Designer</div><div class="timeline-company">RYMO Technologies, Navi Mumbai</div><div class="timeline-date">Aug 2025</div><div class="timeline-desc">Designed VR-based physiotherapy solutions to accelerate mobility rehabilitation. Created UI/UX flows, interaction prototypes, and 3D models for digital health products.</div></div>
-    <div class="timeline-item"><div class="timeline-role">Experience Design Intern</div><div class="timeline-company">HIVE Lab, IIT Kanpur</div><div class="timeline-date">Jun — July 2025</div><div class="timeline-desc">Designed UI/UX for a QR-based emergency evacuation system and immersive educational tools for K-12 students. Contributed to projection mapping installations and XR experience design.</div></div>
+    <div class="timeline-item"><div class="timeline-role">Experience Design Intern</div><div class="timeline-company">HIVE Lab, IIT Kanpur</div><div class="timeline-date">Jun — Jul 2025</div><div class="timeline-desc">Designed UI/UX for a QR-based emergency evacuation system and immersive educational tools for K-12 students. Contributed to projection mapping installations and XR experience design.</div></div>
     <div class="timeline-item"><div class="timeline-role">XR Design Intern</div><div class="timeline-company">IAVERSE, Kolkata</div><div class="timeline-date">Feb 2024</div><div class="timeline-desc">Designed immersive 3D exhibition spaces for government and international AR/VR showcases. Built and optimized interactive environments for Meta Quest 3.</div></div>
     <div class="timeline-item"><div class="timeline-role">Video Production Intern</div><div class="timeline-company">NEWS LIVE, Guwahati</div><div class="timeline-date">Jul — Aug 2023</div><div class="timeline-desc">Produced news segment thumbnails, motion graphics, and lower-thirds for live broadcast. Gained VFX experience through 3D modeling and visual effects for award show productions.</div></div>
   </div>
@@ -394,11 +409,10 @@ footer a:hover{color:var(--accent)}
   <p><a href="#hero">Back to top</a></p>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const loaderFill=document.getElementById('loader-fill'),loader=document.getElementById('loader');
 let progress=0;
-const li=setInterval(()=>{progress+=Math.random()*25+10;if(progress>=100){progress=100;clearInterval(li);setTimeout(()=>{loader.classList.add('hidden');animateHero()},400)}loaderFill.style.width=progress+'%'},200);
+const li=setInterval(()=>{progress+=Math.random()*25+10;if(progress>=100){progress=100;clearInterval(li);setTimeout(()=>{loader.classList.add('hidden')},400)}loaderFill.style.width=progress+'%'},200);
 
 function toggleNav(){document.getElementById('navLinks').classList.toggle('open');document.getElementById('menuToggle').classList.toggle('open')}
 function closeNav(){document.getElementById('navLinks').classList.remove('open');document.getElementById('menuToggle').classList.remove('open')}
@@ -407,62 +421,48 @@ function toggleTheme(){
   const h=document.documentElement,c=h.getAttribute('data-theme'),n=c==='dark'?'light':'dark';
   h.setAttribute('data-theme',n);
   document.getElementById('themeLabel').textContent=n==='dark'?'Light':'Dark';
-  updateSceneTheme(n);
   const i=document.getElementById('themeIcon');
   i.innerHTML=n==='light'?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>':'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
 }
 
-function animateHero(){
-  ['.hero-eyebrow','.hero-name','.hero-subtitle','.hero-cta','.hero-scroll'].forEach((s,i)=>{
-    const el=document.querySelector(s);
-    setTimeout(()=>{el.style.transition='opacity 1s cubic-bezier(.23,1,.32,1),transform 1s cubic-bezier(.23,1,.32,1)';el.style.opacity='1';el.style.transform='translateY(0)'},200+i*200);
+// ── CINEMATIC VIDEO FADE LOOP ──
+(function(){
+  const video=document.getElementById('heroVideo');
+  if(!video)return;
+  const FADE_DUR=0.5;
+  let rafId;
+
+  function fadeLoop(){
+    rafId=requestAnimationFrame(fadeLoop);
+    if(!video.duration||video.paused)return;
+    const ct=video.currentTime,dur=video.duration;
+    if(ct<FADE_DUR){
+      video.style.opacity=Math.min(1,ct/FADE_DUR);
+    }else if(ct>dur-FADE_DUR){
+      video.style.opacity=Math.max(0,(dur-ct)/FADE_DUR);
+    }else{
+      video.style.opacity=1;
+    }
+  }
+
+  video.addEventListener('ended',()=>{
+    video.style.opacity='0';
+    setTimeout(()=>{video.currentTime=0;video.play()},100);
   });
-}
 
-// THREE.JS
-const canvas=document.getElementById('scene-canvas');
-const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-renderer.setSize(window.innerWidth,window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,.1,1000);
-camera.position.z=30;
+  video.addEventListener('canplaythrough',()=>{
+    video.style.opacity='0';
+    video.play().then(()=>{fadeLoop()}).catch(()=>{video.muted=true;video.play().then(()=>{fadeLoop()})});
+  },{once:true});
 
-const pc=600,pos=new Float32Array(pc*3),vel=[];
-for(let i=0;i<pc;i++){pos[i*3]=(Math.random()-.5)*60;pos[i*3+1]=(Math.random()-.5)*60;pos[i*3+2]=(Math.random()-.5)*40;vel.push({x:(Math.random()-.5)*.005,y:(Math.random()-.5)*.005,z:(Math.random()-.5)*.005})}
-const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
-const pm=new THREE.PointsMaterial({color:0xda7756,size:.08,transparent:true,opacity:.6,sizeAttenuation:true});
-const pts=new THREE.Points(pg,pm);scene.add(pts);
+  video.load();
+})();
 
-const shapes=[];const ac=0xda7756,mc=0x333333;
-function cs(g,c,x,y,z,s){const m=new THREE.MeshBasicMaterial({color:c,wireframe:true,transparent:true,opacity:.3});const mesh=new THREE.Mesh(g,m);mesh.position.set(x,y,z);mesh.scale.setScalar(s);mesh.userData={baseY:y,speed:Math.random()*.5+.3,rot:{x:(Math.random()-.5)*.003,y:(Math.random()-.5)*.003,z:(Math.random()-.5)*.002},amp:Math.random()*1.5+.5,isAcc:c===ac};scene.add(mesh);shapes.push(mesh)}
-cs(new THREE.IcosahedronGeometry(1,0),ac,-14,8,-5,2.5);
-cs(new THREE.OctahedronGeometry(1,0),mc,16,-6,-8,3);
-cs(new THREE.TetrahedronGeometry(1,0),ac,12,10,-10,2);
-cs(new THREE.TorusGeometry(1,.3,8,16),mc,-18,-8,-6,2);
-cs(new THREE.DodecahedronGeometry(1,0),ac,20,2,-12,1.8);
-cs(new THREE.IcosahedronGeometry(1,1),mc,-8,-14,-4,1.5);
-cs(new THREE.RingGeometry(.8,1.2,6),ac,6,16,-15,2.2);
-cs(new THREE.TorusKnotGeometry(.8,.25,64,8),ac,-20,4,-10,1.2);
-
-function updateSceneTheme(t){const a=t==='light'?0xc46a4a:0xda7756,m=t==='light'?0xcccccc:0x333333;pm.color.setHex(a);shapes.forEach(s=>{s.material.color.setHex(s.userData.isAcc?a:m)})}
-
-let mx=0,my=0;document.addEventListener('mousemove',e=>{mx=(e.clientX/window.innerWidth-.5)*2;my=(e.clientY/window.innerHeight-.5)*2});
-window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight)});
-
-let t=0;
-function animate(){requestAnimationFrame(animate);t+=.01;
-camera.position.x+=(mx*2-camera.position.x)*.02;camera.position.y+=(-my*2-camera.position.y)*.02;camera.lookAt(0,0,0);
-const p=pg.attributes.position.array;for(let i=0;i<pc;i++){p[i*3]+=vel[i].x;p[i*3+1]+=vel[i].y;p[i*3+2]+=vel[i].z;if(Math.abs(p[i*3])>30)vel[i].x*=-1;if(Math.abs(p[i*3+1])>30)vel[i].y*=-1;if(Math.abs(p[i*3+2])>20)vel[i].z*=-1}pg.attributes.position.needsUpdate=true;
-shapes.forEach(s=>{s.rotation.x+=s.userData.rot.x;s.rotation.y+=s.userData.rot.y;s.rotation.z+=s.userData.rot.z;s.position.y=s.userData.baseY+Math.sin(t*s.userData.speed)*s.userData.amp});
-const sy=window.scrollY,ms=document.body.scrollHeight-window.innerHeight,sf=sy/ms;
-pts.material.opacity=Math.max(.1,.6-sf*.8);shapes.forEach(s=>{s.material.opacity=Math.max(.05,.3-sf*.4)});
-renderer.render(scene,camera)}
-animate();
-
+// ── SCROLL OBSERVER ──
 const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');en.target.style.opacity='1';en.target.style.transform='translateY(0) translateX(0)'}})},{threshold:.12,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('.fade-in,.timeline-item,.project-card,.achievement-item,.edu-card').forEach(el=>obs.observe(el));
 
+// ── SMOOTH ANCHOR ──
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const tgt=document.querySelector(a.getAttribute('href'));if(tgt)tgt.scrollIntoView({behavior:'smooth',block:'start'})})});
 </script>
 </body>
