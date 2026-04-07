@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdur Rouf Ahmed — Experience Designer | UX Researcher | XR Designer</title>
 <meta name="description" content="Portfolio of Abdur Rouf Ahmed — Experience Designer, UX Researcher, and XR Designer bridging tradition and technology through human-centered immersive experiences.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,8 +16,8 @@
   --accent:#c46a4a;--accent-dim:rgba(196,106,74,0.08);--accent-glow:rgba(196,106,74,0.18);
   --border:#ddd;--border-light:#e5e2dc;--glass:rgba(0,0,0,0.03);--glass-border:rgba(0,0,0,0.07);
   --nav-bg:rgba(245,242,236,0.85);--loader-bg:#f5f2ec;
+  --serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
 }
-:root{--serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{background:var(--bg);color:var(--text-primary);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--accent);color:var(--bg)}
@@ -28,17 +29,15 @@ body{background:var(--bg);color:var(--text-primary);font-family:var(--sans);over
 #loader .loader-bar{width:200px;height:2px;background:var(--border);border-radius:2px;overflow:hidden}
 #loader .loader-fill{height:100%;width:0;background:var(--accent);border-radius:2px;transition:width .3s}
 
-.hero-video-wrap{position:absolute;top:200px;left:0;right:0;bottom:0;z-index:0;overflow:hidden;pointer-events:none;contain:strict;transform:translateZ(0)}
-.hero-video-wrap video{width:100%;height:100%;object-fit:cover;opacity:0;will-change:opacity;transform:translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden}
-.hero-video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 30%,transparent 60%,var(--bg) 100%);z-index:1;pointer-events:none}
+/* ── VIDEO: fixed layer, completely outside document flow ── */
+#heroVideoFixed{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .6s ease}
+#heroVideoFixed.visible{opacity:1}
+#heroVideoFixed video{position:absolute;top:200px;left:0;width:100%;height:calc(100% - 200px);object-fit:cover}
+#heroVideoFixed .vid-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 35%,transparent 55%,var(--bg) 100%);z-index:1}
 
-#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding-top:calc(8rem - 75px);padding-bottom:160px;isolation:isolate;contain:layout style;transform:translateZ(0)}
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;padding-top:calc(8rem - 75px);padding-bottom:160px}
 .hero-content{text-align:center;max-width:900px;padding:0 24px;position:relative;z-index:10}
-
-/* All content below hero — solid bg, isolated from video GPU layer */
-#whatido,#about,#experience,#projects,#achievements,#education,#contact{position:relative;z-index:2;background:var(--bg);transform:translateZ(0)}
-.h-divider{position:relative;z-index:2;background:var(--bg)}
-footer{position:relative;z-index:2;background:var(--bg)}
 .hero-eyebrow{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;opacity:0;transform:translateY(20px)}
 .hero-name{font-family:var(--serif);font-size:clamp(48px,9vw,120px);line-height:.95;letter-spacing:-2.46px;color:var(--text-primary);margin-bottom:0;opacity:0;transform:translateY(20px)}
 .hero-name em{font-style:italic;color:var(--text-secondary)}
@@ -47,8 +46,6 @@ footer{position:relative;z-index:2;background:var(--bg)}
 .hero-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:40px;font-size:14px;font-weight:400;letter-spacing:.03em;text-decoration:none;transition:all .4s cubic-bezier(.23,1,.32,1);font-family:var(--sans)}
 .hero-btn.primary{background:var(--accent);color:#fff;border:1px solid var(--accent)}
 .hero-btn.primary:hover{background:transparent;color:var(--accent);transform:translateY(-2px)}
-.hero-btn.secondary{background:transparent;color:var(--text-primary);border:1px solid var(--border)}
-.hero-btn.secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
 .hero-btn svg{width:16px;height:16px}
 .hero-scroll{opacity:0;transform:translateY(20px);display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:56px}
 .hero-scroll span{font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase}
@@ -61,6 +58,7 @@ footer{position:relative;z-index:2;background:var(--bg)}
 .animate-fade-rise-delay-2{animation:fadeRise .8s ease-out .4s forwards;opacity:0}
 .animate-fade-rise-delay-3{animation:fadeRise .8s ease-out .6s forwards;opacity:0}
 
+/* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:var(--nav-bg);border-bottom:1px solid var(--border)}
 nav .logo{font-family:var(--serif);font-size:20px;color:var(--text-primary);letter-spacing:.02em;text-decoration:none}
 nav .logo span{color:var(--accent)}
@@ -70,9 +68,13 @@ nav .nav-links a:hover{color:var(--accent);background:var(--glass);border-color:
 .menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101;background:none;border:none;padding:4px}
 .menu-toggle span{display:block;width:24px;height:1.5px;background:var(--text-primary);transition:all .3s}
 
+/* ── ALL SECTIONS BELOW HERO: solid bg, above the fixed video ── */
 section{position:relative;z-index:1}
+#whatido,#about,#experience,#projects,#achievements,#education,#contact{background:var(--bg)}
+.h-divider{background:var(--bg);position:relative;z-index:1}
+footer{background:var(--bg);position:relative;z-index:1}
 
-#whatido{padding:96px 0 88px;overflow:hidden;position:relative}
+#whatido{padding:96px 0 88px;overflow:hidden}
 #whatido .section-label{padding-left:40px;margin-bottom:32px}
 .marquee-wrapper{position:relative}
 .marquee-wrapper::before,.marquee-wrapper::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none}
@@ -208,6 +210,14 @@ footer a:hover{color:var(--accent)}
   <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
 </div>
 
+<!-- VIDEO: fixed behind everything, hidden when scrolled past hero -->
+<div id="heroVideoFixed">
+  <video id="heroVideo" muted playsinline preload="auto">
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4" type="video/mp4">
+  </video>
+  <div class="vid-overlay"></div>
+</div>
+
 <nav>
   <a href="#hero" class="logo">rouf<span>.</span></a>
   <div class="nav-links" id="navLinks">
@@ -223,12 +233,6 @@ footer a:hover{color:var(--accent)}
 </nav>
 
 <section id="hero">
-  <div class="hero-video-wrap">
-    <video id="heroVideo" muted playsinline preload="auto">
-      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4" type="video/mp4">
-    </video>
-    <div class="hero-video-overlay"></div>
-  </div>
   <div class="hero-content">
     <p class="hero-eyebrow animate-fade-rise">Experience Designer · UX Researcher · XR Designer</p>
     <h1 class="hero-name animate-fade-rise-delay">Beyond <em>screens,</em>  I craft<br><em>experiences.</em></h1>
@@ -372,8 +376,8 @@ footer a:hover{color:var(--accent)}
     <div class="section-label" style="justify-content:center">07 — Get in Touch</div>
     <h2 class="contact-heading">Let's build<br>something <em>together</em></h2>
     <p class="contact-sub">I'm always open to discussing new projects, creative ideas, or opportunities to be part of something extraordinary.</p>
+      <p class="contact-sub">Mobile: +91 8638698050  Email: rouf.work04@gmail.com</p>
     <div class="contact-links">
-      <a href="mailto:rouf.work04@gmail.com" class="contact-btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email Me</a>
       <a href="https://www.behance.net/roufahmed2" target="_blank" class="contact-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zM9 11.5c0-1.405-1-2-2.5-2H2v4h4.5c1.5 0 2.5-.595 2.5-2zM2 4h4.5C7.879 4 9 4.61 9 6.028 9 7.391 7.879 8 6.5 8H2V4z"/></svg>Behance</a>
       <a href="https://www.linkedin.com/in/roufahmed/" target="_blank" class="contact-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
       <a href="https://drive.google.com/file/d/10NcHXahTdT7nCxXtR2XYqMIdRGHWYZ4a/view?usp=sharing" target="_blank" class="contact-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Resume</a>
@@ -387,53 +391,71 @@ footer a:hover{color:var(--accent)}
 </footer>
 
 <script>
-const loaderFill=document.getElementById('loader-fill'),loader=document.getElementById('loader');
-let progress=0;
-const li=setInterval(()=>{progress+=Math.random()*25+10;if(progress>=100){progress=100;clearInterval(li);setTimeout(()=>{loader.classList.add('hidden')},400)}loaderFill.style.width=progress+'%'},200);
+var loaderFill=document.getElementById('loader-fill'),loader=document.getElementById('loader');
+var progress=0;
+var li=setInterval(function(){progress+=Math.random()*25+10;if(progress>=100){progress=100;clearInterval(li);setTimeout(function(){loader.classList.add('hidden')},400)}loaderFill.style.width=progress+'%'},200);
 
 function toggleNav(){document.getElementById('navLinks').classList.toggle('open');document.getElementById('menuToggle').classList.toggle('open')}
 function closeNav(){document.getElementById('navLinks').classList.remove('open');document.getElementById('menuToggle').classList.remove('open')}
 
+/* ── VIDEO: fade via CSS transitions only, hide when scrolled past hero ── */
 (function(){
-  const video=document.getElementById('heroVideo');
-  if(!video)return;
-  const FADE_DUR=0.8;
-  let faded=false,fadedIn=false;
+  var wrap=document.getElementById('heroVideoFixed');
+  var video=document.getElementById('heroVideo');
+  var hero=document.getElementById('hero');
+  if(!video||!wrap)return;
+
+  var fadedIn=false,fadedOut=false;
 
   video.addEventListener('timeupdate',function(){
     if(!video.duration)return;
-    const ct=video.currentTime,dur=video.duration;
+    var ct=video.currentTime,dur=video.duration;
     if(!fadedIn&&ct>0.05){
-      video.style.transition='opacity '+FADE_DUR+'s ease';
-      video.style.opacity='1';
-      fadedIn=true;faded=false;
+      wrap.classList.add('visible');
+      fadedIn=true;fadedOut=false;
     }
-    if(!faded&&ct>dur-FADE_DUR-0.1){
-      video.style.transition='opacity '+FADE_DUR+'s ease';
-      video.style.opacity='0';
-      faded=true;
+    if(!fadedOut&&ct>dur-0.9){
+      wrap.classList.remove('visible');
+      fadedOut=true;
     }
   });
 
   video.addEventListener('ended',function(){
-    video.style.transition='none';
-    video.style.opacity='0';
-    fadedIn=false;faded=false;
-    setTimeout(function(){video.currentTime=0;video.play()},150);
+    wrap.classList.remove('visible');
+    fadedIn=false;fadedOut=false;
+    setTimeout(function(){video.currentTime=0;video.play()},200);
   });
 
   video.addEventListener('canplaythrough',function(){
-    video.style.opacity='0';
     video.play().catch(function(){video.muted=true;video.play()});
   },{once:true});
 
   video.load();
+
+  /* Hide video layer entirely when scrolled past hero */
+  var ticking=false;
+  window.addEventListener('scroll',function(){
+    if(!ticking){
+      ticking=true;
+      requestAnimationFrame(function(){
+        var rect=hero.getBoundingClientRect();
+        if(rect.bottom<0){
+          wrap.style.display='none';
+        }else{
+          wrap.style.display='';
+        }
+        ticking=false;
+      });
+    }
+  },{passive:true});
 })();
 
-const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');en.target.style.opacity='1';en.target.style.transform='translateY(0) translateX(0)'}})},{threshold:.12,rootMargin:'0px 0px -30px 0px'});
-document.querySelectorAll('.fade-in,.timeline-item,.project-card,.achievement-item,.edu-card').forEach(el=>obs.observe(el));
+/* ── SCROLL OBSERVER ── */
+var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('visible');en.target.style.opacity='1';en.target.style.transform='translateY(0) translateX(0)'}})},{threshold:.12,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.fade-in,.timeline-item,.project-card,.achievement-item,.edu-card').forEach(function(el){obs.observe(el)});
 
-document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const tgt=document.querySelector(a.getAttribute('href'));if(tgt)tgt.scrollIntoView({behavior:'smooth',block:'start'})})});
+/* ── SMOOTH ANCHOR ── */
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var tgt=document.querySelector(a.getAttribute('href'));if(tgt)tgt.scrollIntoView({behavior:'smooth',block:'start'})})});
 </script>
 </body>
 </html>
