@@ -1,98 +1,439 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logoisum | Video Editing Agency</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            barlow: ['Barlow', 'sans-serif'],
-            instrument: ['"Instrument Serif"', 'serif'],
-          }
-        }
-      }
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Portfolio of Abdur Rouf Ahmed — Experience Designer, UX Researcher, and XR Designer bridging tradition and technology through human-centered immersive experiences.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f2ec;--bg-elevated:#edeae3;--bg-card:#fff;
+  --text-primary:#1a1814;--text-secondary:#6b6560;--text-muted:#9e9890;
+  --accent:#c46a4a;--accent-dim:rgba(196,106,74,0.08);--accent-glow:rgba(196,106,74,0.18);
+  --border:#ddd;--border-light:#e5e2dc;--glass:rgba(0,0,0,0.03);--glass-border:rgba(0,0,0,0.07);
+  --nav-bg:rgba(245,242,236,0.85);--loader-bg:#f5f2ec;
+}
+:root{--serif:'Instrument Serif',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--text-primary);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:var(--bg)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:3px}
 
-  <style>
-    /* Subtle text shadow to ensure visibility over video without needing a background overlay */
-    .text-glow {
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.6);
-    }
-  </style>
+#loader{position:fixed;inset:0;z-index:9999;background:var(--loader-bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;transition:opacity .8s,visibility .8s}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#loader .loader-text{font-family:var(--serif);font-size:clamp(18px,3vw,28px);color:var(--text-secondary);letter-spacing:.05em}
+#loader .loader-bar{width:200px;height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+#loader .loader-fill{height:100%;width:0;background:var(--accent);border-radius:2px;transition:width .3s}
+
+.hero-video-wrap{position:absolute;top:200px;left:0;right:0;bottom:0;z-index:0;overflow:hidden;pointer-events:none;contain:strict;transform:translateZ(0)}
+.hero-video-wrap video{width:100%;height:100%;object-fit:cover;opacity:0;will-change:opacity;transform:translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.hero-video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 30%,transparent 60%,var(--bg) 100%);z-index:1;pointer-events:none}
+
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding-top:calc(8rem - 75px);padding-bottom:160px;isolation:isolate;contain:layout style;transform:translateZ(0)}
+.hero-content{text-align:center;max-width:900px;padding:0 24px;position:relative;z-index:10}
+
+/* All content below hero — solid bg, isolated from video GPU layer */
+#whatido,#about,#experience,#projects,#achievements,#education,#contact{position:relative;z-index:2;background:var(--bg);transform:translateZ(0)}
+.h-divider{position:relative;z-index:2;background:var(--bg)}
+footer{position:relative;z-index:2;background:var(--bg)}
+.hero-eyebrow{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;opacity:0;transform:translateY(20px)}
+.hero-name{font-family:var(--serif);font-size:clamp(48px,9vw,120px);line-height:.95;letter-spacing:-2.46px;color:var(--text-primary);margin-bottom:0;opacity:0;transform:translateY(20px)}
+.hero-name em{font-style:italic;color:var(--text-secondary)}
+.hero-subtitle{font-size:clamp(15px,2vw,18px);color:var(--text-secondary);font-weight:300;line-height:1.7;max-width:560px;margin:32px auto 0;opacity:0;transform:translateY(20px)}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:48px;opacity:0;transform:translateY(20px)}
+.hero-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:40px;font-size:14px;font-weight:400;letter-spacing:.03em;text-decoration:none;transition:all .4s cubic-bezier(.23,1,.32,1);font-family:var(--sans)}
+.hero-btn.primary{background:var(--accent);color:#fff;border:1px solid var(--accent)}
+.hero-btn.primary:hover{background:transparent;color:var(--accent);transform:translateY(-2px)}
+.hero-btn.secondary{background:transparent;color:var(--text-primary);border:1px solid var(--border)}
+.hero-btn.secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.hero-btn svg{width:16px;height:16px}
+.hero-scroll{opacity:0;transform:translateY(20px);display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:56px}
+.hero-scroll span{font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;height:40px}50%{opacity:1;height:60px}}
+
+@keyframes fadeRise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-rise{animation:fadeRise .8s ease-out forwards}
+.animate-fade-rise-delay{animation:fadeRise .8s ease-out .2s forwards;opacity:0}
+.animate-fade-rise-delay-2{animation:fadeRise .8s ease-out .4s forwards;opacity:0}
+.animate-fade-rise-delay-3{animation:fadeRise .8s ease-out .6s forwards;opacity:0}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:var(--nav-bg);border-bottom:1px solid var(--border)}
+nav .logo{font-family:var(--serif);font-size:20px;color:var(--text-primary);letter-spacing:.02em;text-decoration:none}
+nav .logo span{color:var(--accent)}
+nav .nav-links{display:flex;gap:6px;align-items:center}
+nav .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;transition:all .3s;padding:8px 18px;border-radius:8px;border:1px solid transparent;background:transparent}
+nav .nav-links a:hover{color:var(--accent);background:var(--glass);border-color:var(--glass-border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101;background:none;border:none;padding:4px}
+.menu-toggle span{display:block;width:24px;height:1.5px;background:var(--text-primary);transition:all .3s}
+
+section{position:relative;z-index:1}
+
+#whatido{padding:96px 0 88px;overflow:hidden;position:relative}
+#whatido .section-label{padding-left:40px;margin-bottom:32px}
+.marquee-wrapper{position:relative}
+.marquee-wrapper::before,.marquee-wrapper::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none}
+.marquee-wrapper::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
+.marquee-wrapper::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+.marquee-track{display:flex;gap:12px;width:max-content;animation:marqueeScroll 35s linear infinite}
+.marquee-item{flex-shrink:0;padding:12px 22px;border:1px solid var(--glass-border);border-radius:10px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:13px;color:var(--text-secondary);white-space:nowrap;display:flex;align-items:center;gap:10px;box-shadow:0 4px 24px rgba(0,0,0,0.12),inset 0 1px 0 rgba(255,255,255,0.05);transition:all .3s}
+.marquee-item:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 4px 30px var(--accent-dim),inset 0 1px 0 rgba(255,255,255,0.06)}
+.marquee-item .mi-icon{font-size:16px}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.section-label{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:48px;display:flex;align-items:center;gap:16px}
+.section-label::before{content:'';width:40px;height:1px;background:var(--accent)}
+
+#about{padding:120px 40px;max-width:1200px;margin:0 auto}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:0}
+.about-intro{font-size:17px;line-height:1.8;color:var(--text-secondary);font-weight:300}
+.about-intro p+p{margin-top:20px}
+.about-intro strong{color:var(--text-primary);font-weight:500}
+.about-details{display:flex;flex-direction:column;gap:32px}
+.detail-block h4{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px}
+.detail-block p{font-size:14px;line-height:1.7;color:var(--text-secondary)}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.tool-tag{padding:10px 16px;border:1px solid var(--glass-border);border-radius:10px;font-size:11px;color:var(--text-secondary);font-family:var(--mono);transition:all .4s cubic-bezier(.23,1,.32,1);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 2px 16px rgba(0,0,0,0.08),inset 0 1px 0 rgba(255,255,255,0.04);text-align:center;letter-spacing:.02em}
+.tool-tag:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);transform:translateY(-3px);box-shadow:0 8px 28px var(--accent-dim),inset 0 1px 0 rgba(255,255,255,0.06)}
+
+#experience{padding:120px 40px;max-width:1200px;margin:0 auto}
+.timeline{margin-top:0;position:relative;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--border-light) 10%,var(--border-light) 90%,transparent)}
+.timeline-item{position:relative;padding:0 0 48px 40px;opacity:0;transform:translateX(-20px)}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-item::before{content:'';position:absolute;left:-44px;top:8px;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent);background:var(--bg);z-index:1;transition:all .3s}
+.timeline-item:hover::before{background:var(--accent);box-shadow:0 0 20px var(--accent-glow)}
+.timeline-role{font-family:var(--serif);font-size:20px;color:var(--text-primary);margin-bottom:6px}
+.timeline-company{font-size:14px;color:var(--accent);margin-bottom:6px}
+.timeline-date{font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.1em;margin-bottom:14px}
+.timeline-desc{font-size:13px;line-height:1.7;color:var(--text-secondary);max-width:540px}
+
+#projects{padding:120px 40px;max-width:1100px;margin:0 auto}
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:0}
+.project-card{position:relative;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-card);transition:all .5s cubic-bezier(.23,1,.32,1);opacity:0;transform:translateY(30px)}
+.project-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 30px var(--accent-dim)}
+.project-thumb{width:100%;aspect-ratio:16/9;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.project-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--bg-card),transparent 50%)}
+.project-thumb img{width:100%;height:100%;object-fit:cover;position:relative;z-index:0;transition:transform .6s cubic-bezier(.23,1,.32,1)}
+.project-card:hover .project-thumb img{transform:scale(1.05)}
+.project-number{position:absolute;top:14px;left:16px;font-family:var(--mono);font-size:10px;color:#fff;letter-spacing:.1em;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,0.5)}
+.project-info{padding:24px}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.project-tags span{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--accent-dim);border-radius:10px}
+.project-title{font-family:var(--serif);font-size:19px;color:var(--text-primary);margin-bottom:10px}
+.project-desc{font-size:12px;line-height:1.65;color:var(--text-secondary);margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.project-link{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--accent);text-decoration:none;font-weight:500;letter-spacing:.03em;transition:gap .3s}
+.project-link:hover{gap:14px}
+.project-link svg{width:14px;height:14px;transition:transform .3s}
+.project-link:hover svg{transform:translateX(4px)}
+.view-more-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border:1px solid var(--accent);border-radius:40px;color:var(--accent);text-decoration:none;font-size:15px;font-weight:500;letter-spacing:.03em;font-family:var(--sans);transition:all .4s cubic-bezier(.23,1,.32,1);position:relative;overflow:hidden;background:transparent}
+.view-more-btn::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .4s cubic-bezier(.23,1,.32,1);z-index:0;border-radius:40px}
+.view-more-btn:hover::before{transform:translateX(0)}
+.view-more-btn:hover{color:#fff;border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 32px var(--accent-glow)}
+.view-more-btn span{position:relative;z-index:1}
+.view-more-btn svg{width:16px;height:16px;position:relative;z-index:1;transition:transform .3s}
+.view-more-btn:hover svg{transform:translate(3px,-3px)}
+
+#achievements{padding:120px 40px;max-width:1200px;margin:0 auto}
+.achievements-list{margin-top:0;display:flex;flex-direction:column}
+.achievement-item{padding:20px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;opacity:0;transform:translateY(20px);transition:all .3s}
+.achievement-item:first-child{border-top:1px solid var(--border)}
+.achievement-item:hover{padding-left:12px}
+.achievement-year{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.1em;min-width:60px}
+.achievement-text{font-size:14px;color:var(--text-secondary);line-height:1.5}
+.achievement-text strong{color:var(--text-primary);font-weight:500}
+.achievement-type{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+
+#education{padding:120px 40px;max-width:1200px;margin:0 auto}
+.edu-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-top:0}
+.edu-card{border:1px solid var(--border);border-radius:14px;padding:32px;background:var(--bg-card);transition:all .4s;opacity:0;transform:translateY(20px)}
+.edu-card:hover{border-color:var(--accent);background:var(--bg-elevated)}
+.edu-degree{font-family:var(--serif);font-size:19px;color:var(--text-primary);margin-bottom:8px}
+.edu-school{font-size:13px;color:var(--accent);margin-bottom:6px}
+.edu-year{font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.08em}
+
+#contact{padding:160px 40px;text-align:center}
+.contact-inner{max-width:700px;margin:0 auto}
+.contact-heading{font-family:var(--serif);font-size:clamp(36px,6vw,72px);line-height:1;margin-bottom:24px;color:var(--text-primary)}
+.contact-heading em{font-style:italic;color:var(--accent)}
+.contact-sub{font-size:15px;color:var(--text-secondary);margin-bottom:48px;line-height:1.6;font-weight:300}
+.contact-links{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.contact-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border:1px solid var(--border);border-radius:40px;color:var(--text-primary);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:.03em;transition:all .4s;background:transparent}
+.contact-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);transform:translateY(-2px)}
+.contact-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500}
+.contact-btn.primary:hover{background:transparent;color:var(--accent)}
+.contact-btn svg{width:15px;height:15px}
+
+.h-divider{width:100%;max-width:1200px;margin:0 auto;height:1px;background:linear-gradient(to right,transparent,var(--border-light) 20%,var(--border-light) 80%,transparent)}
+
+footer{padding:40px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;max-width:1400px;margin:0 auto}
+footer p{font-size:11px;color:var(--text-muted);font-family:var(--mono);letter-spacing:.05em}
+footer a{color:var(--text-secondary);text-decoration:none;transition:color .3s}
+footer a:hover{color:var(--accent)}
+
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  nav{padding:16px 20px;position:fixed;flex-wrap:wrap}
+  nav .nav-links{display:none;width:100%;order:3;flex-direction:column;align-items:stretch;gap:0;margin-top:16px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:14px;padding:8px;box-shadow:0 12px 48px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.04);animation:menuSlideIn .3s cubic-bezier(.23,1,.32,1)}
+  nav .nav-links.open{display:flex}
+  nav .nav-links a{font-size:14px;padding:14px 20px;border-radius:10px;transition:all .25s;text-align:left}
+  nav .nav-links a:hover{background:var(--accent-dim);color:var(--accent)}
+  .menu-toggle{display:flex}
+  .menu-toggle.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+  .menu-toggle.open span:nth-child(2){opacity:0}
+  .menu-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+  @keyframes menuSlideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  .about-grid{grid-template-columns:1fr;gap:48px}
+  .projects-grid{grid-template-columns:1fr}
+  #about,#experience,#projects,#achievements,#education,#contact{padding-left:24px;padding-right:24px}
+  #whatido .section-label{padding-left:24px}
+  .timeline{padding-left:24px}.timeline-item{padding-left:24px}.timeline-item::before{left:-28px}
+  .achievement-item{grid-template-columns:1fr;gap:8px}.achievement-year{min-width:auto}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:32px 24px}
+  .contact-links{flex-direction:column;align-items:center}
+  .hero-cta{flex-direction:column;align-items:center}
+  .hero-content{padding:0 24px}
+}
+</style>
 </head>
-<body class="antialiased bg-black overflow-x-hidden">
+<body>
 
-  <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 w-[95%] max-w-7xl bg-white rounded-[16px] shadow-lg z-50 px-6 py-4 flex items-center justify-between transition-all">
-    
-    <a href="#" class="font-barlow font-bold text-xl tracking-tight text-black">
-      Logoisum.
-    </a>
+<div id="loader">
+  <div class="loader-text">Abdur Rouf Ahmed</div>
+  <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+</div>
 
-    <div class="hidden md:flex items-center gap-8 font-barlow font-medium text-[14px] text-gray-700">
-      <a href="#" class="hover:text-black transition-colors">About</a>
-      <a href="#" class="hover:text-black transition-colors">Works</a>
-      <a href="#" class="hover:text-black transition-colors">Services</a>
-      <a href="#" class="hover:text-black transition-colors">Testimonial</a>
-    </div>
+<nav>
+  <a href="#hero" class="logo">rouf<span>.</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="#about" onclick="closeNav()">About</a>
+    <a href="#experience" onclick="closeNav()">Experience</a>
+    <a href="#projects" onclick="closeNav()">Work</a>
+    <a href="#achievements" onclick="closeNav()">Recognition</a>
+    <a href="#contact" onclick="closeNav()">Contact</a>
+  </div>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-    <a href="#" class="bg-[#222] text-white px-5 py-2.5 rounded-full flex items-center gap-3 hover:bg-black transition-colors group">
-      <span class="font-barlow font-medium text-[14px]">Book A Free Meeting</span>
-      <div class="bg-white/20 p-1.5 rounded-full group-hover:bg-white/30 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform -rotate-45">
-          <path d="M5 12h14"></path>
-          <path d="m12 5 7 7-7 7"></path>
-        </svg>
-      </div>
-    </a>
-  </nav>
-
-  <section class="relative w-full min-h-[100svh] md:min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
-    
-    <video 
-      autoplay 
-      loop 
-      muted 
-      playsinline 
-      class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
-    >
-      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260228_065522_522e2295-ba22-457e-8fdb-fbcd68109c73.mp4" type="video/mp4">
-      Your browser does not support the video tag.
+<section id="hero">
+  <div class="hero-video-wrap">
+    <video id="heroVideo" muted playsinline preload="auto">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4" type="video/mp4">
     </video>
-
-    <div class="relative z-10 flex flex-col items-center text-center px-4 w-full max-w-5xl mt-16">
-      
-      <h1 class="flex flex-col items-center justify-center text-white text-glow">
-        <span class="font-barlow font-bold text-4xl md:text-6xl lg:text-[72px] tracking-[-2px] md:tracking-[-4px] leading-none mb-2">
-          Agency that makes your
-        </span>
-        <span class="font-instrument italic text-5xl md:text-[84px] leading-tight font-light">
-          videos & reels viral
-        </span>
-      </h1>
-
-      <p class="font-barlow font-medium text-[16px] md:text-[18px] text-white/95 mt-6 max-w-2xl text-glow">
-        Short-form video editing for Influencers, Creators and Brands
-      </p>
-
-      <a href="#" class="mt-10 bg-white text-black px-8 py-4 rounded-full flex items-center gap-3 hover:scale-105 hover:shadow-xl transition-all duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-          <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
-        </svg>
-        <span class="font-barlow font-semibold text-[16px]">See Our Workreel</span>
+    <div class="hero-video-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow animate-fade-rise">Experience Designer · UX Researcher · XR Designer</p>
+    <h1 class="hero-name animate-fade-rise-delay">Beyond <em>screens,</em>  I craft<br><em>experiences.</em></h1>
+    <p class="hero-subtitle animate-fade-rise-delay-2">Bridging tradition and technology — designing human-centered experiences for brilliant minds, fearless makers, and thoughtful communities.</p>
+    <div class="hero-cta animate-fade-rise-delay-3">
+      <a href="https://drive.google.com/file/d/10NcHXahTdT7nCxXtR2XYqMIdRGHWYZ4a/view?usp=sharing" target="_blank" class="hero-btn primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        My Resume
       </a>
-
     </div>
-  </section>
+    <div class="hero-scroll animate-fade-rise-delay-3">
+      <span>Scroll to explore</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
 
+<section id="whatido">
+  <div class="section-label">01 — What I Do</div>
+  <div class="marquee-wrapper" id="marqueeWrapper">
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-item"><span class="mi-icon">&#x1f9ed;</span>UX Research</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3a8;</span>UI/UX Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f97d;</span>XR Design (AR/VR/MR)</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f52c;</span>Design Research</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f9e9;</span>Interaction Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f5fa;&#xfe0f;</span>Service Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3d7;&#xfe0f;</span>Information Architecture</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f4d0;</span>Wireframing &amp; Prototyping</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f9ea;</span>Usability Testing</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3ae;</span>Game Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3ac;</span>Motion Graphics</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f4e6;</span>3D Modeling</div>
+      <div class="marquee-item"><span class="mi-icon">&#x2728;</span>Design Thinking</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3f7;&#xfe0f;</span>Branding</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f9ed;</span>UX Research</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3a8;</span>UI/UX Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f97d;</span>XR Design (AR/VR/MR)</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f52c;</span>Design Research</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f9e9;</span>Interaction Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f5fa;&#xfe0f;</span>Service Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3d7;&#xfe0f;</span>Information Architecture</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f4d0;</span>Wireframing &amp; Prototyping</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f9ea;</span>Usability Testing</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3ae;</span>Game Design</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3ac;</span>Motion Graphics</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f4e6;</span>3D Modeling</div>
+      <div class="marquee-item"><span class="mi-icon">&#x2728;</span>Design Thinking</div>
+      <div class="marquee-item"><span class="mi-icon">&#x1f3f7;&#xfe0f;</span>Branding</div>
+    </div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<section id="about">
+  <div class="section-label">02 — About Me</div>
+  <div class="about-grid">
+    <div class="about-intro fade-in">
+      <p>I'm <strong>Abdur Rouf Ahmed</strong>, an Experience Designer and UX Researcher pursuing my <strong>M.Des in Experience Design</strong> at NIFT Mumbai. With <strong>5+ internships</strong> spanning UI/UX, XR design, product design, service design, and design research, I bring an end-to-end perspective — from user research and wireframing through high-fidelity prototyping and usability testing.</p>
+      <p>I believe the most powerful design happens where <strong>tradition meets technology</strong>. My work transforms traditional practices into immersive digital experiences — creating <strong>human-centered solutions</strong> that serve society while unlocking tangible market value for businesses and communities.</p>
+    </div>
+    <div class="about-details">
+      <div class="detail-block fade-in">
+        <h4>Tools &amp; Technologies</h4>
+        <div class="tools-grid">
+          <span class="tool-tag">Figma</span><span class="tool-tag">Blender</span><span class="tool-tag">Unity</span><span class="tool-tag">Unreal Engine</span><span class="tool-tag">Adobe CC</span><span class="tool-tag">Spline</span><span class="tool-tag">TouchDesigner</span><span class="tool-tag">Framer</span><span class="tool-tag">Maya</span><span class="tool-tag">SketchUp</span><span class="tool-tag">Android Studio</span>
+        </div>
+      </div>
+      <div class="detail-block fade-in">
+        <h4>Languages</h4>
+        <p>English · Hindi · Bengali · Assamese</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<section id="experience">
+  <div class="section-label">03 — Experience</div>
+  <div class="timeline">
+    <div class="timeline-item"><div class="timeline-role">Freelance Design Researcher</div><div class="timeline-company">Rural Handmade, Mumbai</div><div class="timeline-date">Dec 2025 — Feb 2026</div><div class="timeline-desc">Explored immersive technology interventions (AR/VR) to promote and preserve handmade products and their cultural narratives. Conducted field research, stakeholder interviews, and ethnographic studies with rural artisan communities.</div></div>
+    <div class="timeline-item"><div class="timeline-role">Freelance Product Designer</div><div class="timeline-company">RYMO Technologies, Navi Mumbai</div><div class="timeline-date">Aug 2025</div><div class="timeline-desc">Designed VR-based physiotherapy solutions to accelerate mobility rehabilitation. Created UI/UX flows, interaction prototypes, and 3D models for digital health products.</div></div>
+    <div class="timeline-item"><div class="timeline-role">Experience Design Intern</div><div class="timeline-company">HIVE Lab, IIT Kanpur</div><div class="timeline-date">Jun — Jul 2025</div><div class="timeline-desc">Designed UI/UX for a QR-based emergency evacuation system and immersive educational tools for K-12 students. Contributed to projection mapping installations and XR experience design.</div></div>
+    <div class="timeline-item"><div class="timeline-role">XR Design Intern</div><div class="timeline-company">IAVERSE, Kolkata</div><div class="timeline-date">Feb 2024</div><div class="timeline-desc">Designed immersive 3D exhibition spaces for government and international AR/VR showcases. Built and optimized interactive environments for Meta Quest 3.</div></div>
+    <div class="timeline-item"><div class="timeline-role">Video Production Intern</div><div class="timeline-company">NEWS LIVE, Guwahati</div><div class="timeline-date">Jul 2023</div><div class="timeline-desc">Produced news segment thumbnails, motion graphics, and lower-thirds for live broadcast. Gained VFX experience through 3D modeling and visual effects for award show productions.</div></div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<section id="projects">
+  <div class="section-label">04 — Featured Works</div>
+  <div class="projects-grid">
+    <div class="project-card"><div class="project-thumb"><div class="project-number">01</div><img src="images/Muse_AR.jpg" alt="Muse.AR" loading="lazy"></div><div class="project-info"><div class="project-tags"><span>AR/VR</span><span>UI/UX</span><span>Service Design</span></div><h3 class="project-title">Muse.AR</h3><p class="project-desc">An AR-based virtual gallery app enabling immersive viewing and interactive presentation of student and artist digital artworks. Built with Figma and Unity.</p><a href="https://muse-ar.vercel.app/" target="_blank" class="project-link">View Case Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
+    <div class="project-card"><div class="project-thumb"><div class="project-number">02</div><img src="images/E-Pilgrim.jpg" alt="E-Pilgrim" loading="lazy"></div><div class="project-info"><div class="project-tags"><span>Immersive</span><span>UI/UX</span><span>Service Design</span></div><h3 class="project-title">E-Pilgrim</h3><p class="project-desc">An immersive digital platform enabling devotees to experience pilgrimage and darshan remotely. Conducted user research with 30+ devotees; designed end-to-end service blueprints and UI.</p><a href="https://e-pilgrim-rouf.vercel.app/" target="_blank" class="project-link">View Case Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
+    <div class="project-card"><div class="project-thumb"><div class="project-number">03</div><img src="images/Connect_App.jpg" alt="Connect" loading="lazy"></div><div class="project-info"><div class="project-tags"><span>UI/UX</span><span>Product Design</span></div><h3 class="project-title">Connect</h3><p class="project-desc">A platform bridging college students and brands for event sponsorship — streamlining discovery, outreach, and collaboration to fuel campus festivals with the right partners.</p><a href="https://www.behance.net/gallery/235140619/CONNECT-UI-Design" target="_blank" class="project-link">View Case Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
+    <div class="project-card"><div class="project-thumb"><div class="project-number">04</div><img src="images/Post_Partum.jpg" alt="Postpartum Mental Health" loading="lazy"></div><div class="project-info"><div class="project-tags"><span>Game Design</span><span>UX Research</span><span>Service Design</span></div><h3 class="project-title">Postpartum Mental Health</h3><p class="project-desc">An educational board game raising awareness about postpartum depression — helping players identify myths, recognize symptoms, and learn supportive actions for new mothers.</p><a href="https://www.behance.net/gallery/235142871/Post-Partum-Mental-Health-Game-Design" target="_blank" class="project-link">View Case Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
+    <div class="project-card"><div class="project-thumb"><div class="project-number">05</div><img src="images/Miniso.jpg" alt="Reimagining Miniso" loading="lazy"></div><div class="project-info"><div class="project-tags"><span>Design Innovation</span><span>Retail UX</span></div><h3 class="project-title">Reimagining Miniso</h3><p class="project-desc">Transforming Miniso India from a cute retail store into an experiential ecosystem — rethinking the in-store journey through design innovation and strategic brand evolution.</p><a href="https://www.behance.net/gallery/240328203/Reimagining-Miniso" target="_blank" class="project-link">View Case Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
+    <div class="project-card"><div class="project-thumb"><div class="project-number">06</div><img src="images/Feni.jpg" alt="Feniário" loading="lazy"></div><div class="project-info"><div class="project-tags"><span>Visual Merchandising</span><span>Branding</span></div><h3 class="project-title">Feniário</h3><p class="project-desc">A premium Goan Feni brand identity and visual merchandising project — crafting a refined, rooted, and rare positioning for a traditional spirit through photography and spatial design.</p><a href="https://www.behance.net/gallery/240327171/VM-Feniario" target="_blank" class="project-link">View Case Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
+  </div>
+  <div style="display:flex;justify-content:center;margin-top:48px">
+    <a href="https://www.behance.net/roufahmed2" target="_blank" class="view-more-btn">
+      <span>View More Projects</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<section id="achievements">
+  <div class="section-label">05 — Recognition</div>
+  <div class="achievements-list">
+    <div class="achievement-item"><span class="achievement-year">2026</span><span class="achievement-text"><strong>Book Chapter</strong> — Selected for publication in "Enhancing Youth and Young Professionals Engagement in SETI for Disaster Resilience", endorsed by Springer Nature</span><span class="achievement-type">Publication</span></div>
+    <div class="achievement-item"><span class="achievement-year">2025</span><span class="achievement-text"><strong>Research Paper</strong> — Presented at DRCI International Conference 2025</span><span class="achievement-type">Research</span></div>
+    <div class="achievement-item"><span class="achievement-year">2025</span><span class="achievement-text"><strong>Winner</strong> — XR Apps Reimagination Challenge, XDG Mumbai</span><span class="achievement-type">Award</span></div>
+    <div class="achievement-item"><span class="achievement-year">2025</span><span class="achievement-text"><strong>Design Installation</strong> — Showcased at Kalaghoda Art Festival, Mumbai</span><span class="achievement-type">Exhibition</span></div>
+    <div class="achievement-item"><span class="achievement-year">2024</span><span class="achievement-text"><strong>Design Lead</strong> — Led design direction for Ecstasy 2024, Annual Cultural Fest, CIT Kokrajhar</span><span class="achievement-type">Leadership</span></div>
+    <div class="achievement-item"><span class="achievement-year">2023</span><span class="achievement-text"><strong>Convenor</strong> — Organized and managed ANUVA 2023, Annual Design Fest, CIT Kokrajhar</span><span class="achievement-type">Leadership</span></div>
+    <div class="achievement-item"><span class="achievement-year">2025</span><span class="achievement-text"><strong>Google UX Design</strong> — Professional Certificate</span><span class="achievement-type">Certification</span></div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<section id="education">
+  <div class="section-label">06 — Education</div>
+  <div class="edu-cards">
+    <div class="edu-card"><div class="edu-degree">M.Des, Experience Design</div><div class="edu-school">National Institute of Fashion Technology (NIFT), Mumbai</div><div class="edu-year">2024 — 2026</div></div>
+    <div class="edu-card"><div class="edu-degree">B.Des, Multimedia Communication &amp; Design</div><div class="edu-school">Central Institute of Technology, Kokrajhar, Assam</div><div class="edu-year">2020 — 2024</div></div>
+    <div class="edu-card"><div class="edu-degree">Class 10th &amp; 12th</div><div class="edu-school">Jawahar Navodaya Vidyalaya, Barpeta, Assam</div><div class="edu-year">2012 — 2019</div></div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<section id="contact">
+  <div class="contact-inner fade-in">
+    <div class="section-label" style="justify-content:center">07 — Get in Touch</div>
+    <h2 class="contact-heading">Let's build<br>something <em>together</em></h2>
+    <p class="contact-sub">I'm always open to discussing new projects, creative ideas, or opportunities to be part of something extraordinary.</p>
+    <div class="contact-links">
+      <a href="mailto:rouf.work04@gmail.com" class="contact-btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email Me</a>
+      <a href="https://www.behance.net/roufahmed2" target="_blank" class="contact-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zM9 11.5c0-1.405-1-2-2.5-2H2v4h4.5c1.5 0 2.5-.595 2.5-2zM2 4h4.5C7.879 4 9 4.61 9 6.028 9 7.391 7.879 8 6.5 8H2V4z"/></svg>Behance</a>
+      <a href="https://www.linkedin.com/in/roufahmed/" target="_blank" class="contact-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+      <a href="https://drive.google.com/file/d/10NcHXahTdT7nCxXtR2XYqMIdRGHWYZ4a/view?usp=sharing" target="_blank" class="contact-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Resume</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Abdur Rouf Ahmed. Designed with intention.</p>
+  <p><a href="#hero">Back to top</a></p>
+</footer>
+
+<script>
+const loaderFill=document.getElementById('loader-fill'),loader=document.getElementById('loader');
+let progress=0;
+const li=setInterval(()=>{progress+=Math.random()*25+10;if(progress>=100){progress=100;clearInterval(li);setTimeout(()=>{loader.classList.add('hidden')},400)}loaderFill.style.width=progress+'%'},200);
+
+function toggleNav(){document.getElementById('navLinks').classList.toggle('open');document.getElementById('menuToggle').classList.toggle('open')}
+function closeNav(){document.getElementById('navLinks').classList.remove('open');document.getElementById('menuToggle').classList.remove('open')}
+
+(function(){
+  const video=document.getElementById('heroVideo');
+  if(!video)return;
+  const FADE_DUR=0.8;
+  let faded=false,fadedIn=false;
+
+  video.addEventListener('timeupdate',function(){
+    if(!video.duration)return;
+    const ct=video.currentTime,dur=video.duration;
+    if(!fadedIn&&ct>0.05){
+      video.style.transition='opacity '+FADE_DUR+'s ease';
+      video.style.opacity='1';
+      fadedIn=true;faded=false;
+    }
+    if(!faded&&ct>dur-FADE_DUR-0.1){
+      video.style.transition='opacity '+FADE_DUR+'s ease';
+      video.style.opacity='0';
+      faded=true;
+    }
+  });
+
+  video.addEventListener('ended',function(){
+    video.style.transition='none';
+    video.style.opacity='0';
+    fadedIn=false;faded=false;
+    setTimeout(function(){video.currentTime=0;video.play()},150);
+  });
+
+  video.addEventListener('canplaythrough',function(){
+    video.style.opacity='0';
+    video.play().catch(function(){video.muted=true;video.play()});
+  },{once:true});
+
+  video.load();
+})();
+
+const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('visible');en.target.style.opacity='1';en.target.style.transform='translateY(0) translateX(0)'}})},{threshold:.12,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.fade-in,.timeline-item,.project-card,.achievement-item,.edu-card').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const tgt=document.querySelector(a.getAttribute('href'));if(tgt)tgt.scrollIntoView({behavior:'smooth',block:'start'})})});
+</script>
 </body>
 </html>
